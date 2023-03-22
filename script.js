@@ -21,12 +21,6 @@ function getUserMediaSupported() {
   // Placeholder function for next step. Paste over this in the next step.
   function enableCam(event) {
   }
-  const constraints = {
-    video: {
-      facingMode: 'environment'
-    }
-  };
-
   function enableCam(event) {
     // Only continue if the COCO-SSD has finished loading.
     if (!model) {
@@ -49,6 +43,7 @@ function getUserMediaSupported() {
       video.addEventListener('loadeddata', predictWebcam);
     });
 }
+
 
 
   // Placeholder function for next step.
