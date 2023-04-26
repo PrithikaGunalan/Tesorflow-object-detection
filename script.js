@@ -67,7 +67,7 @@ var model = undefined;
 const modelUrl = 'https://prithikagunalan.github.io/Tesorflow-object-detection/model3.json' 
 
 async function loadModel() {
-  model = await loadLayersModel(modelUrl);
+  model = await tf.loadLayersModel(modelUrl);
     // Show demo section now model is ready to use.
     demosSection.classList.remove('invisible');
 }
