@@ -19,8 +19,7 @@ function getUserMediaSupported() {
   }
   
   // Placeholder function for next step. Paste over this in the next step.
-  function enableCam(event) {
-  }
+ 
   function enableCam(event) {
     // Only continue if the COCO-SSD has finished loading.
     if (!model) {
@@ -35,6 +34,8 @@ function getUserMediaSupported() {
       video: {
         facingMode: 'environment'
       }
+
+     
     };
 
     // Activate the webcam stream.
@@ -43,8 +44,6 @@ function getUserMediaSupported() {
       video.addEventListener('loadeddata', predictWebcam);
     });
 }
-
-
 
   // Placeholder function for next step.
 function predictWebcam() {
@@ -62,11 +61,21 @@ var model = undefined;
 // to get everything needed to run.
 // Note: cocoSsd is an external object loaded from our index.html
 // script tag import so ignore any warning in Glitch.
-cocoSsd.load().then(function (loadedModel) {
-  model = loadedModel;
-  // Show demo section now model is ready to use.
-  demosSection.classList.remove('invisible');
-});
+
+//const modelUrl = 'http://192.168.1.35:1883/getmodel/model.json'; 
+//const modelUrl = 'https://raw.githubusercontent.com/suresh7730/GG/main/model.json';
+const modelUrl = 'model3.json' 
+
+async function loadModel() {
+  model = await tf.loadLayersModel(modelUrl);
+    // Show demo section now model is ready to use.
+    demosSection.classList.remove('invisible');
+}
+
+
+
+// Call loadModel() function to load the model.
+loadModel();
 
 var children = [];
 
@@ -82,30 +91,13 @@ function predictWebcam() {
     // Now lets loop through predictions and draw them to the live view if
     // they have a high confidence score.
     for (let n = 0; n < predictions.length; n++) {
-      // If we are over 66% sure we are sure we classified it right, draw it!
-      if (predictions[n].score > 0.66) {
-        const p = document.createElement('p');
-        p.innerText = predictions[n].class  + ' - with ' 
-            + Math.round(parseFloat(predictions[n].score) * 100) 
-            + '% confidence.';
-        p.style = 'margin-left: ' + predictions[n].bbox[0] + 'px; margin-top: '
-            + (predictions[n].bbox[1] - 10) + 'px; width: ' 
-            + (predictions[n].bbox[2] - 10) + 'px; top: 0; left: 0;';
-
-        const highlighter = document.createElement('div');
-        highlighter.setAttribute('class', 'highlighter');
-        highlighter.style = 'left: ' + predictions[n].bbox[0] + 'px; top: '
-            + predictions[n].bbox[1] + 'px; width: ' 
-            + predictions[n].bbox[2] + 'px; height: '
-            + predictions[n].bbox[3] + 'px;';
-
-        liveView.appendChild(highlighter);
-        liveView.appendChild(p);
-        children.push(highlighter);
-        children.push(p);
+      // Extract the keys of each prediction object and log them to the console along with their values.
+      const predictionKeys = Object.keys(predictions[n]);
+      for (let i = 0; i < predictionKeys.length; i++) {
+        const key = predictionKeys[i];
+        console.log(`${key}: ${predictions[n][key]}`);
       }
     }
-    
     // Call this function again to keep predicting when the browser is ready.
     window.requestAnimationFrame(predictWebcam);
   });
