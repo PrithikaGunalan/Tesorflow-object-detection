@@ -64,7 +64,7 @@ var model = undefined;
 
 //const modelUrl = 'http://192.168.1.35:1883/getmodel/model.json'; 
 //const modelUrl = 'https://raw.githubusercontent.com/suresh7730/GG/main/model.json';
-const modelUrl = 'https://prithikagunalan.github.io/Tesorflow-object-detection/model3.json' 
+const modelUrl = 'model3.json' 
 
 async function loadModel() {
   model = await tf.loadLayersModel(modelUrl);
